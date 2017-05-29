@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Exam</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="MainText">Цей додаток було розорблено в рамках екзаменаційного проекту з курсу "Технології створення програмного забезпечення" студентом групи ПЗ-14-1д ...</string>
+    <string name="About"> Технології створення ПЗ\n\nСтудент\nПрізвище: Журавський\nІм\'я: Олександр\nГрупа: ПЗ-14-1д\n\n Білет №: 1\n\n Дата: 30/05/2017</string>
+
+</resources>
