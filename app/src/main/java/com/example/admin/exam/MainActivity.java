@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.admin.exam.fragment.About;
+import com.example.admin.exam.fragment.DataBase;
 import com.example.admin.exam.fragment.MainFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity
     MainFragment fmain;
     FragmentTransaction ftrans;
     About fabout;
+    DataBase fdb;
 
 
     @Override
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity
 
         fmain=new MainFragment();
         fabout= new About();
+        fdb = new DataBase();
         ftrans= getFragmentManager().beginTransaction();
         ftrans.replace(R.id.container,fmain);
         ftrans.commit();
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity
 
             case R.id.nav_gallery: ftrans.replace(R.id.container,fabout);break;
 
-            case R.id.nav_slideshow: break;
+            case R.id.nav_slideshow: ftrans.replace(R.id.container,fdb);break;
 
         }
 
