@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,7 +29,7 @@ public class DataBase extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
 
     EditText etParam1, etParam2;
-    Button btAdd, btShow;
+    Button btAdd;
 
     ListView MyList;
 
@@ -42,18 +46,18 @@ public class DataBase extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbHelper= new DatabaseMyHelper(this.getContext());
-        Refresh();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_data_base, container, false);
         btAdd=(Button)myView.findViewById(R.id.button2);
-        btShow =(Button)myView.findViewById(R.id.button3);
         MyList = (ListView)myView.findViewById(R.id.ListView1);
         btAdd.setOnClickListener(this);
         etParam1=(EditText)myView.findViewById(R.id.editText);
         etParam2=(EditText)myView.findViewById(R.id.editText2);
+        Refresh();
         return myView;
     }
 
@@ -61,7 +65,7 @@ public class DataBase extends Fragment implements View.OnClickListener {
     public void Refresh()
     {
        final SQLiteDatabase database = dbHelper.getWritableDatabase();
-//        registerForContextMenu(MyList);
+        registerForContextMenu(MyList);
         Cursor cursor = database.query(DatabaseMyHelper.TABLE_EXAM, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
@@ -80,6 +84,38 @@ public class DataBase extends Fragment implements View.OnClickListener {
         }
         cursor.close();
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(Menu.NONE,1,1,"Удалить");
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case 1:
+                ContextMenu.ContextMenuInfo menuInfo = item.getMenuInfo();
+                AdapterView.AdapterContextMenuInfo acmi = (AdapterView.AdapterContextMenuInfo) menuInfo;
+                Parameters obj = (Parameters) MyList.getItemAtPosition(acmi.position);
+                SQLiteDatabase db = new DatabaseMyHelper(DataBase.this.getContext()).getReadableDatabase();
+                db.delete(dbHelper.TABLE_EXAM,"_id="+obj.getId(),null);
+                db.close();
+                Toast.makeText(this.getContext(),"Удалено", Toast.LENGTH_SHORT).show();
+                Refresh();
+                break;
+            default:
+                return super.onContextItemSelected(item);
+        }
+        return true;
+    }
+
+
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
